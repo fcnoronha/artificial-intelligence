@@ -1,7 +1,9 @@
-%%%%% Insira aqui os seus predicados.
-%%%%% Use quantos predicados auxiliares julgar necess�rio
+% EP02a MAC0425 - INTELIGENCIA ARTIFICIAL
 
-%%% PREDICADOS AUXILIARES
+% FELIPE CASTRO DE NORONHA
+% NUSP: 10737032
+
+%%% PREDICADOS AUXILIARES %%%
 
 % Checa se duas listam tem o mesmo tamanho
 mesmo_tamanho([], []).
@@ -14,49 +16,35 @@ checa_subconjunto([H|T], L):-
     member(H, L), 
     checa_subconjunto(T, L).
 
-% checa_subconjunto_ord(X, Y) sucede se X for subconjunto de Y, onde os
-% elementos em X tem que aparecer na mesma ordem que aparecem em Y
-checa_subconjunto_ord([], _).
-checa_subconjunto_ord(_, []) :-
-    false.
-checa_subconjunto_ord([H|T], [H|L]):- 
-    checa_subconjunto_ord(T, L).
-checa_subconjunto_ord([H|T], L):- 
-    member(H1, L), 
-    checa_subconjunto_ord(T1, L).
+%%% EXERCICIO 1 %%% 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 1 - NÂO OK
-
-gera_conjunto([], C, LO) :- 
-    checa_subconjunto(C, LO).
-gera_conjunto( [H | T], C, LO) :- 
-    member(H, C),
-    gera_conjunto(T, C, LO).
-gera_conjunto( [H | T], C, LO) :- 
+gera_conjunto(LO, [], ANS, C) :-
+    checa_subconjunto(C, LO),
+    ANS = C.
+gera_conjunto(LO, [H|T], ANS, C) :-
     \+ member(H, C),
-    append(C, [H], C),
-    gera_conjunto(T, C, LO).
+    append(C, [H], NC),
+    gera_conjunto(LO, T, ANS, NC).
+gera_conjunto(LO, [_|T], ANS, C) :-
+    gera_conjunto(LO, T, ANS, C).
+       
+lista_para_conjunto(L, C) :-
+    gera_conjunto(L, L, CN, []),
+    !,
+    C = CN.
 
-%lista_para_conjunto(L, C) :- 
-%    gera_conjunto(L, C, L),
-%    !.
+% Testes:
+% lista_para_conjunto([], []).
+% lista_para_conjunto([], X).
+% lista_para_conjunto([a,b,c], X).
+% lista_para_conjunto([a,b,c], [c,a,b]).
+% lista_para_conjunto([a,a,a,a,b,b,a,a,a,b,c], X).
+% lista_para_conjunto([a,a,a,a,b,b,a,a,a,b,c], [b,a,c]).
+% lista_para_conjunto([], [a,c]).
+% lista_para_conjunto([x,x,x,x], [x]).
 
-lista_para_conjunto(List, Unique) :-
-    list_unique_1(List, [], Unique).
-list_unique_1([], _, []).
-list_unique_1([X|Xs], So_far, Us) :-
-    list_unique_2(X, Xs, So_far, Us).
-list_unique_2(X, Xs, So_far, [X|Us]) :-
-    maplist(dif(X), So_far),
-    list_unique_1(Xs, [X|So_far], Us).
-list_unique_2(X, Xs, So_far, Us) :-
-    memberchk(X, So_far),
-    list_unique_1(Xs, So_far, Us).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 2 - OK
+%%% EXERCICIO 2 %%% 
 
 mesmo_conjunto(L1, L2) :- 
     mesmo_tamanho(L1, L2),
@@ -70,10 +58,8 @@ mesmo_conjunto(L1, L2) :-
 % mesmo_conjunto([a,b,c], [c,b,a])
 % mesmo_conjunto([], [a])
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 3 - OK
+%%% EXERCICIO 3 %%% 
 
 uniao_conjunto(A, B, U) :-
     append(A, B, UR),
@@ -86,10 +72,9 @@ uniao_conjunto(A, B, U) :-
 % uniao_conjunto([a,c], [b,d], X).
 % uniao_conjunto([], [a, b], X).
 % uniao_conjunto([], [a,b], [a,b,c]). 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 4 - OK
+
+%%% EXERCICIO 4 %%% 
 
 gera_inter([], _, ANS, ANS).
 gera_inter([H|A], B, ANS, I) :-
@@ -110,10 +95,9 @@ inter_conjunto(A, B, I) :-
 % inter_conjunto([a,b,c], [a,d,e], X).
 % inter_conjunto([a,b,c], [a,b,c], X).
 % inter_conjunto([], [b], X).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 5 - FALTA TESTAR
+
+%%% EXERCICIO 5 %%% 
 
 calcula_diferenca([], _, D, D).
 calcula_diferenca([X|A], B, ANS, D) :- 
@@ -134,7 +118,6 @@ diferenca_conjunto(A, B, D) :-
 % diferenca_conjunto([a,b,c], [c, h], X).
 % diferenca_conjunto([], [a,b], X).
 % diferenca_conjunto([a], [a], []).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
