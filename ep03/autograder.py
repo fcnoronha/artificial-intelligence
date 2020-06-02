@@ -402,10 +402,8 @@ def run_tests():
     #     file_results.write("Grade in the Test03-02: {0:.1f}/10.0\n".format(final_grades[4]))
     
     # Concluding and updating csv with grades
-    if os.path.exists("results.csv"):
-        csv_flag = "a"
-    else:
-        csv_flag = "w"
+
+    csv_flag = "w"
     #pdb.set_trace()
 
     results_csv = open("results.csv", csv_flag)

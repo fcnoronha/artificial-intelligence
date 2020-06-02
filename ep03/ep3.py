@@ -139,6 +139,8 @@ class BlackjackMDP(util.MDP):
                 new_tuple = ((state[0], None, None), 1, state[0])
             reachable_states.append(new_tuple)
 
+        return reachable_states
+
         # END_YOUR_CODE
 
     def discount(self):
@@ -178,10 +180,28 @@ class ValueIteration(util.MDPAlgorithm):
             for state in mdp.states:
                 pi[state] = max((computeQ(mdp, V, state, action), action) for action in mdp.actions(state))[1]
             return pi
+        
         V = defaultdict(float)  # state -> value of state
         # Implement the main loop of Asynchronous Value Iteration Here:
         # BEGIN_YOUR_CODE
-        raise Exception("Not implemented yet")
+
+        gamma = 1
+        continue_iter = True
+        while continue_iter:
+            vp = defaultdict(float)
+            for state in mdp.states:
+                vp[state] = -float('inf')
+                for act in mdp.actions(state):
+                    q = rs = 0
+                    for ss, p, r in mdp.succAndProbReward(state, act):
+                        q += V[ss] * p
+                        rs += r
+                    q = gamma*q + rs
+            continue_iter = False
+            for state in mdp.states:
+                if abs(vp[state]-V[state]) >= epsilon:
+                    continue_iter
+
         # END_YOUR_CODE
 
         # Extract the optimal policy now
