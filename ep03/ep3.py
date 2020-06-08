@@ -20,11 +20,6 @@
   e em sala de aula, caso voce tenha utilizado alguma referencia,
   liste-as abaixo para que o seu programa nao seja considerado
   plagio ou irregular.
-
-  Exemplo:
-  - O algoritmo Quicksort foi baseado em:
-  https://pt.wikipedia.org/wiki/Quicksort
-  http://www.ime.usp.br/~pf/algoritmos/aulas/quick.html
 """
 
 import math
@@ -101,35 +96,35 @@ class BlackjackMDP(util.MDP):
             # if i will iterate though all cards or if i know the next card
             list_iter = range(len(self.valores_cartas)) if state[1] == None else [state[1]]
             for i in list_iter:
-                # card still available on current deck
-                if state[2][i] != 0:
-                    card_value = self.valores_cartas[i]
-                    # if the game is over deck should be None
-                    if state[0]+card_value > self.limiar or total_amt == 1: 
-                        new_deck = None
-                    else:  
-                        new_deck = state[2][:i] + (state[2][i]-1,) + state[2][i+1:]
-                    # probability of the new state
-                    if state[1] == None:
-                        new_prob = state[2][i]/total_amt
-                    else:
-                        new_prob = 1
-                    # reward of the new state
-                    if total_amt == 1 and state[0]+card_value <= self.limiar:
-                        new_reward = state[0]+card_value
-                    else:
-                        new_reward = 0
-                    new_state = (state[0]+card_value, None, new_deck)
-                    new_tuple = (new_state, new_prob, new_reward)
-                    reachable_states.append(new_tuple)
+                # card not available on current deck
+                if state[2][i] == 0: continue
+                new_hand = state[0] + self.valores_cartas[i]
+                # if the game is over deck should be None
+                if new_hand > self.limiar or total_amt == 1: 
+                    new_deck = None
+                else:  
+                    new_deck = state[2][:i] + (state[2][i]-1,) + state[2][i+1:]
+                # probability of the new state
+                if state[1] == None:
+                    new_prob = state[2][i]/total_amt
+                else:
+                    new_prob = 1
+                # reward of the new state
+                if total_amt == 1 and new_hand <= self.limiar:
+                    new_reward = new_hand
+                else:
+                    new_reward = 0
+                new_state = (new_hand, None, new_deck)
+                new_tuple = (new_state, new_prob, new_reward)
+                reachable_states.append(new_tuple)
 
         elif action == 'Espiar':
             for i in range(len(self.valores_cartas)):
-                # card still available on current deck
-                if state[2][i] != 0:
-                    new_state = (state[0], i, state[2])
-                    new_tuple = (new_state, state[2][i]/total_amt, -self.custo_espiada)
-                    reachable_states.append(new_tuple)
+                # card not available on current deck
+                if state[2][i] == 0: continue
+                new_state = (state[0], i, state[2])
+                new_tuple = (new_state, state[2][i]/total_amt, -self.custo_espiada)
+                reachable_states.append(new_tuple)
 
         elif action == 'Sair':
             if state[0] > self.limiar:
@@ -185,23 +180,25 @@ class ValueIteration(util.MDPAlgorithm):
         # Implement the main loop of Asynchronous Value Iteration Here:
         # BEGIN_YOUR_CODE
 
-        gamma = 1
+        gamma = mdp.discount()
         continue_iter = True
         while continue_iter:
+            # new value function
             vp = defaultdict(float)
             for state in mdp.states:
                 vp[state] = -float('inf')
-                for act in mdp.actions(state):
-                    q = rs = 0
-                    for ss, p, r in mdp.succAndProbReward(state, act):
-                        q += V[ss] * p
-                        rs += r
-                    q = gamma*q + rs
+                for action in mdp.actions(state):
+                    q = 0
+                    for ss, p, r in mdp.succAndProbReward(state, action):
+                        q += p * (gamma*V[ss] + r)
+                    if q > vp[state]: 
+                        vp[state] = q 
             continue_iter = False
             for state in mdp.states:
                 if abs(vp[state]-V[state]) >= epsilon:
-                    continue_iter
-
+                    continue_iter = True
+            if continue_iter: V = vp
+                
         # END_YOUR_CODE
 
         # Extract the optimal policy now
@@ -222,7 +219,10 @@ def geraMDPxereta():
     optimal action for at least 10% of the states.
     """
     # BEGIN_YOUR_CODE
-    raise Exception("Not implemented yet")
+
+    XERETA = BlackjackMDP(valores_cartas=[4, 8, 16], multiplicidade=2, limiar=20, custo_espiada=1)
+    return XERETA
+
     # END_YOUR_CODE
 
 
@@ -282,7 +282,28 @@ class QLearningAlgorithm(util.RLAlgorithm):
          HINT: Remember to check if s is a terminal state and s' None.
         """
         # BEGIN_YOUR_CODE
-        raise Exception("Not implemented yet")
+
+        # learning rate 
+        alpha = self.getStepSize()
+        # gamma
+        gamma = self.discount
+
+        # terminal state
+        if newState == None:
+            self.weights[(state, None)] = reward
+            return 
+        
+        # best action a' from s'
+        best_new_action = None
+        for al in self.actions(newState):
+            if best_new_action == None: 
+                best_new_action = al
+            elif self.getQ(newState, al) > self.getQ(newState, best_new_action):
+                best_new_action = al
+
+        self.weights[(state, action)] = (1-alpha)*self.getQ(state, action) + \
+                alpha*(reward + gamma*self.getQ(newState, best_new_action))
+
         # END_YOUR_CODE
 
 def identityFeatureExtractor(state, action):

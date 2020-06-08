@@ -1,0 +1,4 @@
+na parte 3.1 é correto eu tomar a chave dos self.weight como um par (state, action). Dito isso, quando state é 
+um estado terminal, devo associar a recompensa a (state, action) ou a (state, None)? Entretanto, como o reward para 
+um estado terminal é 0, eu poderia não fazer nada, simplesmente retornar, isso seria correto?
+

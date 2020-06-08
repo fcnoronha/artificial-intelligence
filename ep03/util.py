@@ -9,18 +9,15 @@ class MDPAlgorithm:
 
 ############################################################
 
-
 class MDP:
     """ An abstract class representing a Markov Decision Process (MDP)"""
     
     def startState(self): raise NotImplementedError("Override me")
     """ Return the start state."""
 
-    
     def actions(self, state): raise NotImplementedError("Override me")
     """ Return set of actions possible from |state|"""
 
-    
     def succAndProbReward(self, state, action): raise NotImplementedError("Override me")
     """
         Return a list of (newState, prob, reward) tuples corresponding to edges
@@ -33,7 +30,6 @@ class MDP:
     def discount(self): raise NotImplementedError("Override me")
     """Return the discount  """
 
-    
     def computeStates(self):
         """
          Compute set of states reachable from startState.  Helper function for
@@ -53,8 +49,6 @@ class MDP:
                         queue.append(newState)
         #print(self.states)
 
-
-
 class NumberLineMDP(MDP):
     """
      A simple example of an MDP where states are integers in [-n, +n].
@@ -69,14 +63,6 @@ class NumberLineMDP(MDP):
         return [(state, 0.4, 0),
                 (min(max(state + action, -self.n), +self.n), 0.6, state)]
     def discount(self): return 0.9
-
-
-
-
-
-
-
-
 
 class RLAlgorithm:
     """
@@ -98,28 +84,22 @@ class RLAlgorithm:
          resulted in reward |reward| and a transition to state |newState|.
     """
 
-
 class FixedRLAlgorithm(RLAlgorithm):
     """
      An RL algorithm that acts according to a fixed policy |pi| and doesn't
      actually do any learning.
     """
     def __init__(self, pi): self.pi = pi
-
     
     def getAction(self, state): 
         """Just return the action given by the policy."""
         return self.pi[state]
-
-
     
     def incorporateFeedback(self, state, action, reward, newState): 
         """Don't do anything: just stare off into space."""
-
         pass
 
-def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False,
-             sort=False):
+def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False, sort=False):
     """
      Perform |numTrials| of the following:
      On each trial, take the MDP |mdp| and an RLAlgorithm |rl| and simulates the
@@ -128,7 +108,6 @@ def simulate(mdp, rl, numTrials=10, maxIterations=1000, verbose=False,
      Return the list of rewards that we get for each trial.
     """
 
-    
     def sample(probs):
         """Return i in [0, ..., len(probs)-1] with probability probs[i]."""
         target = random.random()

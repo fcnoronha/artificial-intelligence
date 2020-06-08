@@ -229,6 +229,7 @@ def run_tests():
         if f >= 0.1:
             test_results +=1
         file_results.write("Peeking MDP:\t{0}/{1} correct\n".format(test_results, total_tests))
+        file_results.write("Percentage: " + str(f) + " correct\n")
         global_results += test_results
         part_correct += test_results
         part_tests += total_tests
@@ -242,6 +243,7 @@ def run_tests():
         # End of Part02-02
     except IOError as e:
         file_results.write("Python error: {0}\n".format(e))
+        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except NotImplementedError:
@@ -250,10 +252,12 @@ def run_tests():
         file_results.write("Receiving grade 0.0 in the test\n")
     except AssertionError as e:
         file_results.write("Python error: {0}\n".format(e))
+        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except NameError as e:
         file_results.write("Python error: {0}\n".format(e))
+        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except Timeout.Timeout:
@@ -262,6 +266,7 @@ def run_tests():
         final_grades[2] = (10.0*test_results)
     except Exception as e:
         file_results.write("Python error: {0}\n".format(e))
+        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     else:
@@ -313,27 +318,8 @@ def run_tests():
         file_results.write("Python error: {0}\n".format(e))
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
-    except NotImplementedError:
-        file_results.write("NotImplemented\n")
-        file_results.write("Test did not conclude\n")
-        file_results.write("Receiving grade 0.0 in the test\n")
-    except AssertionError as e:
-        file_results.write("Python error: {0}\n".format(e))
-        file_results.write("Test did not conclude\n")
-        file_results.write("Receiving grade 0.0 in the test\n")
-    except NameError as e:
-        file_results.write("Python error: {0}\n".format(e))
-        file_results.write("Test did not conclude\n")
-        file_results.write("Receiving grade 0.0 in the test\n")
-    except Timeout.Timeout:
-        file_results.write("Test did not conclude in time\n")
-        file_results.write("Receiving proportional grade in the test\n")
-        final_grades[3] = (10.0*test_results)/4.0
-    except Exception as e:
-        file_results.write("Python error: {0}\n".format(e))
-        file_results.write("Test did not conclude\n")
-        file_results.write("Receiving grade 0.0 in the test\n")
     else:
+        #print(e)
         file_results.write("Test concluded without errors\n")
         #file_results.write("Grade in the test: {0:.1f}/10.0\n".format(final_grades[0]))
     finally:
