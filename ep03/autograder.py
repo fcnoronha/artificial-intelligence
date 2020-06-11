@@ -8,9 +8,15 @@ import pylint.lint
 try:
     from ep3 import *
 except Exception as e:
+    if os.path.exists("final_result.txt"):
+        file_flag = "a"
+    else:
+        file_flag = "w"
 
-    file_flag = "w"
-    csv_flag = "w"
+    if os.path.exists("../results.csv"):
+        csv_flag = "a"
+    else:
+        csv_flag = "w"
 
     file_results = open("final_result.txt", file_flag)
     file_results.write("******************************\n")
@@ -20,7 +26,7 @@ except Exception as e:
     file_results.write("Grades are:\nTest01-01: 0.0\nTest01-02: 0.0\n")
     file_results.write("Test02: 0.0\nTest03: 0.0\n")
     file_results.close()
-    results_csv = open("results.csv", csv_flag)
+    results_csv = open("../results.csv", csv_flag)
     results_csv.write("-1000.0, 0.0, 0.0, 0.0, 0.0\n")
     results_csv.close()
     sys.exit(1)
@@ -50,8 +56,10 @@ class Timeout():
 
 
 def run_tests():
-
-    file_flag = "w"
+    if os.path.exists("final_result.txt"):
+        file_flag = "a"
+    else:
+        file_flag = "w"
     file_results = open("final_result.txt", file_flag)
     final_grades = [0.0,0.0,0.0,0.0,0.0,0.0,0.0]  # Grade list (code, p01_01, p01_02, p02, p03)
     lint_result = pylint.lint.Run(['ep3.py'], do_exit=False)
@@ -229,7 +237,6 @@ def run_tests():
         if f >= 0.1:
             test_results +=1
         file_results.write("Peeking MDP:\t{0}/{1} correct\n".format(test_results, total_tests))
-        file_results.write("Percentage: " + str(f) + " correct\n")
         global_results += test_results
         part_correct += test_results
         part_tests += total_tests
@@ -243,7 +250,6 @@ def run_tests():
         # End of Part02-02
     except IOError as e:
         file_results.write("Python error: {0}\n".format(e))
-        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except NotImplementedError:
@@ -252,12 +258,10 @@ def run_tests():
         file_results.write("Receiving grade 0.0 in the test\n")
     except AssertionError as e:
         file_results.write("Python error: {0}\n".format(e))
-        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except NameError as e:
         file_results.write("Python error: {0}\n".format(e))
-        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     except Timeout.Timeout:
@@ -266,7 +270,6 @@ def run_tests():
         final_grades[2] = (10.0*test_results)
     except Exception as e:
         file_results.write("Python error: {0}\n".format(e))
-        print(e)
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
     else:
@@ -318,81 +321,101 @@ def run_tests():
         file_results.write("Python error: {0}\n".format(e))
         file_results.write("Test did not conclude\n")
         file_results.write("Receiving grade 0.0 in the test\n")
+    except NotImplementedError:
+        file_results.write("NotImplemented\n")
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except AssertionError as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except NameError as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except Timeout.Timeout:
+        file_results.write("Test did not conclude in time\n")
+        file_results.write("Receiving proportional grade in the test\n")
+        final_grades[3] = (10.0*test_results)/4.0
+    except Exception as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
     else:
-        #print(e)
         file_results.write("Test concluded without errors\n")
         #file_results.write("Grade in the test: {0:.1f}/10.0\n".format(final_grades[0]))
     finally:
         file_results.write("Grade in the Test03-01: {0:.1f}/10.0\n".format(final_grades[3]))
 
-    # try:
-    #     test_results = 0
-    #     total_tests = 0
-    #     file_results.write("------------------------------\n")
-    #     file_results.write("Part03-02 BlackjackFeatureExtractor:\n")
-    #     #-------------------------------------------------------------------
-    #     total_tests_global += 2
-    #     total_tests += 2
-    #     mdp.computeStates()
-    #     rl = QLearningAlgorithm(mdp.actions, mdp.discount(),blackjackFeatureExtractor,0)
-    #     rl.numIters = 1
-    #     with Timeout(10):
-    #         rl.incorporateFeedback((7, None, (0, 1)), 'Quit', 7, (7, None, None))
-    #         if rl.getQ((7, None, (0, 1)), 'Quit') == 28:
-    #             test_results += 1
-    #         else:
-    #             print(rl.getQ((7, None, (0, 1)), 'Quit'))
-    #         if rl.getQ((2, None, (0, 2)), 'Pegar') == 0:
-    #             test_results += 1
+    try:
+        test_results = 0
+        total_tests = 0
+        file_results.write("------------------------------\n")
+        file_results.write("Part03-02 BlackjackFeatureExtractor:\n")
+        #-------------------------------------------------------------------
+        total_tests_global += 2
+        total_tests += 2
+        mdp.computeStates()
+        rl = QLearningAlgorithm(mdp.actions, mdp.discount(),blackjackFeatureExtractor,0)
+        rl.numIters = 1
+        with Timeout(10):
+            rl.incorporateFeedback((7, None, (0, 1)), 'Quit', 7, (7, None, None))
+            if rl.getQ((7, None, (0, 1)), 'Quit') == 28:
+                test_results += 1
+            else:
+                print(rl.getQ((7, None, (0, 1)), 'Quit'))
+            if rl.getQ((2, None, (0, 2)), 'Pegar') == 0:
+                test_results += 1
 
-    #     file_results.write("BlackjackFeatureExtractor:\t{0}/{1} correct\n".format(test_results, total_tests))
-    #     global_results += test_results
-    #     part_correct += test_results
-    #     part_tests += total_tests
-    #     test_results = 0
-    #     total_tests = 0
+        file_results.write("BlackjackFeatureExtractor:\t{0}/{1} correct\n".format(test_results, total_tests))
+        global_results += test_results
+        part_correct += test_results
+        part_tests += total_tests
+        test_results = 0
+        total_tests = 0
+        if part_tests > 0:
+            final_grades[4] = (10.0*part_correct)/part_tests
+        part_correct = 0
+        part_tests = 0
+        # End of Part01-01
+    except IOError as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except NotImplementedError:
+        file_results.write("NotImplemented\n")
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except AssertionError as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except NameError as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    except Timeout.Timeout:
+        file_results.write("Test did not conclude in time\n")
+        file_results.write("Receiving proportional grade in the test\n")
+        final_grades[4] = (10.0*test_results)/2.0
+    except Exception as e:
+        file_results.write("Python error: {0}\n".format(e))
+        file_results.write("Test did not conclude\n")
+        file_results.write("Receiving grade 0.0 in the test\n")
+    else:
+        file_results.write("Test concluded without errors\n")
+        #file_results.write("Grade in the test: {0:.1f}/10.0\n".format(final_grades[0]))
+    finally:
+        file_results.write("Grade in the Test03-02: {0:.1f}/10.0\n".format(final_grades[4]))
 
-    #     if part_tests > 0:
-    #         final_grades[4] = (10.0*part_correct)/part_tests
-    #     part_correct = 0
-    #     part_tests = 0
-    #     # End of Part01-01
-    # except IOError as e:
-    #     file_results.write("Python error: {0}\n".format(e))
-    #     file_results.write("Test did not conclude\n")
-    #     file_results.write("Receiving grade 0.0 in the test\n")
-    # except NotImplementedError:
-    #     file_results.write("NotImplemented\n")
-    #     file_results.write("Test did not conclude\n")
-    #     file_results.write("Receiving grade 0.0 in the test\n")
-    # except AssertionError as e:
-    #     file_results.write("Python error: {0}\n".format(e))
-    #     file_results.write("Test did not conclude\n")
-    #     file_results.write("Receiving grade 0.0 in the test\n")
-    # except NameError as e:
-    #     file_results.write("Python error: {0}\n".format(e))
-    #     file_results.write("Test did not conclude\n")
-    #     file_results.write("Receiving grade 0.0 in the test\n")
-    # except Timeout.Timeout:
-    #     file_results.write("Test did not conclude in time\n")
-    #     file_results.write("Receiving proportional grade in the test\n")
-    #     final_grades[4] = (10.0*test_results)/2.0
-    # except Exception as e:
-    #     file_results.write("Python error: {0}\n".format(e))
-    #     file_results.write("Test did not conclude\n")
-    #     file_results.write("Receiving grade 0.0 in the test\n")
-    # else:
-    #     file_results.write("Test concluded without errors\n")
-    #     #file_results.write("Grade in the test: {0:.1f}/10.0\n".format(final_grades[0]))
-    # finally:
-    #     file_results.write("Grade in the Test03-02: {0:.1f}/10.0\n".format(final_grades[4]))
-    
     # Concluding and updating csv with grades
-
-    csv_flag = "w"
+    if os.path.exists("../results.csv"):
+        csv_flag = "a"
+    else:
+        csv_flag = "w"
     #pdb.set_trace()
 
-    results_csv = open("results.csv", csv_flag)
+    results_csv = open("../results.csv", csv_flag)
     if len(final_grades) == 5:
         for grade in final_grades:
             results_csv.write("{0},".format(grade))

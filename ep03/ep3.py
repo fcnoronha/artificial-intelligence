@@ -135,7 +135,6 @@ class BlackjackMDP(util.MDP):
             reachable_states.append(new_tuple)
 
         return reachable_states
-
         # END_YOUR_CODE
 
     def discount(self):
@@ -220,7 +219,7 @@ def geraMDPxereta():
     """
     # BEGIN_YOUR_CODE
 
-    XERETA = BlackjackMDP(valores_cartas=[4, 8, 16], multiplicidade=2, limiar=20, custo_espiada=1)
+    XERETA = BlackjackMDP(valores_cartas=[4, 8, 25], multiplicidade=2, limiar=20, custo_espiada=1)
     return XERETA
 
     # END_YOUR_CODE
@@ -287,22 +286,19 @@ class QLearningAlgorithm(util.RLAlgorithm):
         alpha = self.getStepSize()
         # gamma
         gamma = self.discount
-
-        # terminal state
-        if newState == None:
-            self.weights[(state, None)] = reward
-            return 
+        # Q for current state and action
+        cur_q = self.getQ(state, action)
         
-        # best action a' from s'
-        best_new_action = None
-        for al in self.actions(newState):
-            if best_new_action == None: 
-                best_new_action = al
-            elif self.getQ(newState, al) > self.getQ(newState, best_new_action):
-                best_new_action = al
-
-        self.weights[(state, action)] = (1-alpha)*self.getQ(state, action) + \
-                alpha*(reward + gamma*self.getQ(newState, best_new_action))
+        # best value from s' taking action a'
+        next_state_val = 0
+        if newState != None:
+            for al in self.actions(newState):
+                if self.getQ(newState, al) > next_state_val:
+                    next_state_val = self.getQ(newState, al)
+            
+        # update weights from features
+        for f, v in self.featureExtractor(state, action):
+            self.weights[f] += alpha*(reward + (gamma*next_state_val) - cur_q)*v
 
         # END_YOUR_CODE
 
@@ -328,5 +324,27 @@ def blackjackFeatureExtractor(state, action):
     (See identityFeatureExtractor() above for a simple example.)
     """
     # BEGIN_YOUR_CODE
-    raise Exception("Not implemented yet")
+
+    # pairs (feature_key, feature_value)
+    extracted = []
+    feature_value = 1
+
+    # first kind of feature: taken action and total in hands
+    feature_key = action + "_" + str(state[0])
+    extracted.append((feature_key, feature_value))
+
+    if state[2] != None:
+        # second kind of features: action and presence/absence of cards of each type 
+        feature_key = action + "_has_cards_"
+        feature_value = 1
+        for i in range(len(state[2])):
+            feature_key += str(1 if state[2][i] > 0 else 0)
+        extracted.append((feature_key, feature_value))
+
+        # third kind of features: action and amount of cards of each type
+        for i in range(len(state[2])):
+            feature_key = action + "_amt_card_" + str(i) + "_" + str(state[2][i])
+            extracted.append((feature_key, feature_value))
+
+    return extracted
     # END_YOUR_CODE
