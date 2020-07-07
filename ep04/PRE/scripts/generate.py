@@ -1,20 +1,24 @@
 '''
-script responsavel por gerar dataset final
+    Script responsavel por gerar o dataset final. Faz o merge entre os datasets
+    do Fleury e HSL. Mais sobre o funcionamento desse script pode ser visto na 
+    sessão 'preprocessamento' do relatorio. O resultado é armazenado no arquivo
+    'data.csv'.
 '''
+
 import re
 
 # palavras que devem ser mapeadas para valores negativos, positivos ou zero
-subst_z = ['inferior a','ausentes ','ausentes','INDETECTÁVEL',
-           'NÃO DETECTADO','Indeterminado','Inconclusivo','Inconclusivo ',
-           'Indetectável','normal','INCONCLUSIVO','INCONCLUSIVO ',
-           'INDETERMINADO','Influenza B - POSITIVO','FRACAMENTE REAGENTE ',
-           '-','---','*','vide contagem de plaquetas especial.']
 subst_n = ['NEGATIVO','N E G A T I V A','negativo','negativa','NÃO REAGENTE',
            'não reagente','Não reagente','Mutação ausente',
            'NÃO DETECTADO (NEGATIVO)']
 subst_p = ['POSITIVO','P O S I T I V O','POSITIVA','Influenza A - POSITIVO',
            'superior a','maior que 250','positivo','DETECTADO','REAGENTE',
            'DETECTÁVEL','cerca d','DETECTADO (POSITIVO)']
+subst_z = ['inferior a','ausentes ','ausentes','INDETECTÁVEL',
+           'NÃO DETECTADO','Indeterminado','Inconclusivo','Inconclusivo ',
+           'Indetectável','normal','INCONCLUSIVO','INCONCLUSIVO ',
+           'INDETERMINADO','Influenza B - POSITIVO','FRACAMENTE REAGENTE ',
+           '-','---','*','vide contagem de plaquetas especial.']
 
 FILE_PATH = '../'
 FILE_NAME = 'data'
@@ -38,53 +42,54 @@ def substitute(x):
     if 'inferior' in x or 'superior' in x or 'maior' in x or 'cerca' in x:             
         match = re.findall('\d+', x)  
         return float(match[0])
-    if x in subst_z or 'REAGENTE' in x:
-        return 0.0
-    if x in subst_n:
-        return -1.0
     if x in subst_p:
         return 1.0
-    return float(x)
-
-def remove_space_nl(s):
-    '''
-    Remove espaços e quebras de linha de uma determinada string s.
-    '''
-    s = s.replace(' ', '')
-    s = s.replace('\n', '')
-    return s
+    if x in subst_n:
+        return -1.0
+    if x in subst_z:
+        return 0.0
+    try:
+        x = float(x)
+        return x
+    except ValueError:
+        return 0.0
 
 def extract_exams():
     '''
-    Lê todos os exames do arquivo all_both_unique.csv, criando um dicianario
+    Lê todos os exames do arquivo used_analitos.csv, criando um dicianario
     que mapeia exames para uma determinada coluna da tabela e cria a lista
     com as labels do dataset gerado.
     
     Retorna o dicionario e o numero de diferentes features levadas em conta.
     '''
     ex2col = {}
-    feature_cnt = 2
+    n_feature = 2
     labels = ['SEXO', 'IDADE']
-    for row in open(FILE_PATH + 'all_both_unique.csv'):
+    for row in open(FILE_PATH + 'used_analitos.csv'):
         row = row.split(',')
         labels.append(row[0].replace('\n', ''))
         for ex in row:
-            ex2col[remove_space_nl(ex)] = feature_cnt
-        feature_cnt += 1
+            ex2col[remove_space_nl(ex)] = n_feature
+        n_feature += 1
 
     # escrevendo cabeçalho do dataset
     f = open(FILE_PATH + FILE_NAME + '.csv', 'w+')
     f.write(str(labels)[1:-1] + '\n')
     f.close()
 
-    return ex2col, feature_cnt
+    return ex2col, n_feature
 
-def generate_dataset(ex2col, fcnt):
+def generate_dataset(ex2col, n_feature):
     '''
-    Função que gera o dataset.
+    Função principal que gera o dataset. Cada linha gerada é um paciente e cada
+    coluna corresponde a um exame em 'used_analitos' (alem das duas primeiras
+    que correspondem ao sexo e a idade). A geração de novas linhas é feita por
+    batchs de processamento, em que cada batch é um dia de resultados de exames
+    assim, pacientes que realizam varios exames em diferentes datas tem seus 
+    resultados incoporados como uma evolução.
     '''
     data = {}
-    # nome do dataset atual, se tem aspas nos campos, indice da coluna de data
+    # (nome do dataset atual,se tem aspas nos campos,indice da coluna de data)
     for name, has_qm, date_idx in [('fleury', False, 1), ('hsl', True, 2)]:
         is_first = True
         # criando uma entrada no dicionario para cada paciente
@@ -95,7 +100,7 @@ def generate_dataset(ex2col, fcnt):
             if has_qm: row = row.replace('\"', '') 
             row = row.split(',')
             id_pacient = str(row[0])
-            data[id_pacient] = [0 for i in range(fcnt)]
+            data[id_pacient] = [0 for i in range(n_feature)]
             data[id_pacient][0] = 1 if 'F' in row[1] else 2 # 1==F | 2==M
             if row[2] != 'AAAA': 
                 data[id_pacient][1] = 2020 - int(row[2])
@@ -117,7 +122,7 @@ def generate_dataset(ex2col, fcnt):
             if name == 'hsl':
                 all_ex[i][date_idx] = int(date[:4] + date[5:7] + date[8:])
 
-        # sorteado a lista de exames de acordo com a data
+        # ordenando a lista de exames de acordo com a data
         all_ex = sorted(all_ex, key=lambda x: x[date_idx])
 
         r = l = 0
@@ -144,5 +149,5 @@ def generate_dataset(ex2col, fcnt):
             l = r
 
 if __name__ == "__main__":
-    ex2col, feature_cnt = extract_exams()
-    generate_dataset(ex2col, feature_cnt)
+    ex2col, n_feature = extract_exams()
+    generate_dataset(ex2col, n_feature)
