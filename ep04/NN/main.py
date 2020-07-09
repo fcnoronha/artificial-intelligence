@@ -5,7 +5,7 @@
 '''
 
 from data import load_data, process_data, min_max
-from model import Base_NN
+from model import NN1
 from train import split_data, train_network
 import torch, time
 
@@ -34,12 +34,12 @@ if __name__ == "__main__":
         x_train = splitted_data[0]
 
         print('[REDE ' + name + '] INSTANCIANDO REDES...')
-        network = Base_NN(x_train.shape[1])
+        network = NN1(x_train.shape[1])
         optimizer = torch.optim.Adam(network.parameters(), lr=LEARNING_RATE)
         criterion = torch.nn.BCELoss()
 
         print('[REDE ' + name + '] TREINANDO...')
-        train_network(splitted_data, network, optimizer, criterion, MODEL_PATH[exam_type])
+        train_network(splitted_data, network, optimizer, criterion, MODEL_PATH[exam_type], True)
 
         print('MODELO TREINADO. (Salvo em ' + MODEL_PATH[exam_type] + ')')
 

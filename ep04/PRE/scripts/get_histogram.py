@@ -6,7 +6,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('../data_r.csv')
+df = pd.read_csv('../data.csv')
 
 labels = list(df.columns)
 count = [0 for i in range(len(labels))]
@@ -14,5 +14,6 @@ for i in range(len(labels)):
     for x in df[labels[i]]:
         count[i] += 1 if x != 0 else 0
 
+print('Total de exames: ' + str(len(labels)))
 for i in range(len(labels)):
     print(str(labels[i]) + "= " + str(count[i]))

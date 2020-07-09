@@ -6,9 +6,11 @@
 
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.utils import shuffle
+from collections import Counter
 import pandas as pd
 
-def load_data(data_path='../PRE/data.csv'):
+def load_data(data_path='../PRE/data_r.csv'):
     '''
     Funcao que importa dados de um arquivo csv. Retorna um dataFrame.
     '''
@@ -17,7 +19,7 @@ def load_data(data_path='../PRE/data.csv'):
 
 def process_data(data, exam_type):
     '''
-    Faz o processamento finos dos dados para um determinado exame, isolando a
+    Faz o processamento fino dos dados para um determinado exame, isolando a
     coluna de resultados do mesmo para ser usado como y. Além disso, aqui, 
     todos os valores das colunas são normalizadas para o intervalo [0, 1] e 
     linhas com y == 0 (nulo) são excluidas. Finalmente é feito over-sampling
@@ -41,6 +43,9 @@ def process_data(data, exam_type):
     # over-sampling para equilibrar as classes 
     ros = RandomOverSampler(random_state=0)
     x_resampled, y_resampled = ros.fit_resample(x, y)
+    print(sorted(Counter(y_resampled).items()))
+    x, y = shuffle(x_resampled, y_resampled, random_state=42)
+
     return (x, y)
 
 def min_max(df):
