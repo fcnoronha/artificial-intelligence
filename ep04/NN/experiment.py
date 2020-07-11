@@ -58,6 +58,9 @@ def make_kfold():
         x = x.to_numpy()
         y = y.to_numpy()
 
+        print("Formato conjunto treinamento: {0} e de teste: {1}\n"\
+                        .format(x.shape, y.shape))
+
         skf = StratifiedKFold(n_splits=n_folds)
         fold_iter = 1
         for train, val in skf.split(x, y):

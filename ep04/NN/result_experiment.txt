@@ -1,0 +1,78 @@
+
+--- INICIANDO TESTES K-FOLD CROSS VALIDATION
+
+
+-------------------------------------------
+----------- Rede para IGG------------------
+-------------------------------------------
+
+Formato conjunto treinamento: (153404, 196) e de teste: (153404,)
+
+Fold[1] model[1] accuracy on validation 67.00% and train 68.20%
+Fold[1] model[2] accuracy on validation 67.30% and train 68.30%
+Fold[1] model[3] accuracy on validation 65.80% and train 67.10%
+Fold[2] model[1] accuracy on validation 60.40% and train 60.60%
+Fold[2] model[2] accuracy on validation 65.80% and train 66.70%
+Fold[2] model[3] accuracy on validation 65.80% and train 67.10%
+Fold[3] model[1] accuracy on validation 66.90% and train 67.70%
+Fold[3] model[2] accuracy on validation 67.40% and train 68.50%
+Fold[3] model[3] accuracy on validation 65.90% and train 67.00%
+Fold[4] model[1] accuracy on validation 64.70% and train 65.90%
+Fold[4] model[2] accuracy on validation 68.00% and train 68.90%
+Fold[4] model[3] accuracy on validation 65.80% and train 67.20%
+Fold[5] model[1] accuracy on validation 66.80% and train 68.00%
+Fold[5] model[2] accuracy on validation 65.80% and train 66.90%
+Fold[5] model[3] accuracy on validation 65.60% and train 66.90%
+
+-------------------------------------------
+----------- Rede para IGM------------------
+-------------------------------------------
+
+Formato conjunto treinamento: (152826, 196) e de teste: (152826,)
+
+Fold[1] model[1] accuracy on validation 67.50% and train 68.00%
+Fold[1] model[2] accuracy on validation 68.50% and train 68.80%
+Fold[1] model[3] accuracy on validation 66.80% and train 67.50%
+Fold[2] model[1] accuracy on validation 68.00% and train 68.60%
+Fold[2] model[2] accuracy on validation 68.80% and train 69.10%
+Fold[2] model[3] accuracy on validation 67.50% and train 67.90%
+Fold[3] model[1] accuracy on validation 67.90% and train 68.30%
+Fold[3] model[2] accuracy on validation 67.60% and train 68.10%
+Fold[3] model[3] accuracy on validation 67.00% and train 67.80%
+Fold[4] model[1] accuracy on validation 65.60% and train 66.40%
+Fold[4] model[2] accuracy on validation 68.20% and train 69.00%
+Fold[4] model[3] accuracy on validation 66.80% and train 67.80%
+Fold[5] model[1] accuracy on validation 67.50% and train 68.60%
+Fold[5] model[2] accuracy on validation 67.50% and train 68.60%
+Fold[5] model[3] accuracy on validation 66.40% and train 67.50%
+
+-------------------------------------------
+----------- Rede para PCR------------------
+-------------------------------------------
+
+Formato conjunto treinamento: (45794, 196) e de teste: (45794,)
+
+Fold[1] model[1] accuracy on validation 68.50% and train 72.70%
+Fold[1] model[2] accuracy on validation 68.70% and train 72.70%
+Fold[1] model[3] accuracy on validation 68.40% and train 71.60%
+Fold[2] model[1] accuracy on validation 69.00% and train 72.60%
+Fold[2] model[2] accuracy on validation 69.00% and train 72.90%
+Fold[2] model[3] accuracy on validation 68.70% and train 71.90%
+Fold[3] model[1] accuracy on validation 68.50% and train 72.40%
+Fold[3] model[2] accuracy on validation 68.30% and train 73.10%
+Fold[3] model[3] accuracy on validation 68.30% and train 71.80%
+Fold[4] model[1] accuracy on validation 68.20% and train 72.70%
+Fold[4] model[2] accuracy on validation 68.10% and train 73.10%
+Fold[4] model[3] accuracy on validation 68.00% and train 72.20%
+Fold[5] model[1] accuracy on validation 68.30% and train 72.70%
+Fold[5] model[2] accuracy on validation 68.70% and train 73.00%
+Fold[5] model[3] accuracy on validation 68.50% and train 72.20%
+
+--- CRIANDO TABELA
+
+
+Tempo gasto: 7200.77s
+
+--- FIM
+
+

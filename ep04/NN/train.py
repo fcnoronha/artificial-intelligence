@@ -64,7 +64,8 @@ def transfer_to_device(data, network, criterion):
     trasfered_data = (x_train, y_train, x_val, y_val)
     return (trasfered_data, network, criterion)
 
-def train_network(data, network, optimizer, criterion, model_path, verbose=False):
+def train_network(data, network, optimizer, criterion, model_path, \
+                  verbose=False, save=False):
     '''
     Funcao que realiza o treinamento de uma rede neural, usando dados,
     funcao e criterio de otimizacao fornecidos, salvando o modelo treinado
@@ -94,15 +95,18 @@ def train_network(data, network, optimizer, criterion, model_path, verbose=False
             vl_acc = round_tensor(val_acc)
 
             if verbose:
-                print('EPOCH {0}:'.format(epoch))
-                print('Train Set --- loss:{0}; acc:{1}'.format(tr_lss, tr_acc))
-                print('Validation Set  --- loss:{0}; acc:{1}'.format(vl_lss, vl_acc))
+                print('--------- EPOCH {0} ---------'.format(epoch))
+                print('Training set loss: {0:.4f} accuracy: {1:.4f}'.\
+                    format(tr_lss, tr_acc))
+                print('Validation set loss: {0:.4f} accuracy: {1:.4f}'.\
+                    format(vl_lss, vl_acc))
 
         optimizer.zero_grad()  # zera os gradientes do otimizador
         train_loss.backward()  # faz a passagem de volta
         optimizer.step()  # atualiza os parametros
 
     # Salva o modelo em disco:
-    torch.save(network, model_path)
+    if save:
+        torch.save(network, model_path)
 
     return (tr_lss, tr_acc, vl_lss, vl_acc)

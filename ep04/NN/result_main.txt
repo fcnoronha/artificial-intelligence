@@ -1,0 +1,134 @@
+
+CARREGANDO DADOS...
+
+------------------------
+
+[REDE IGG] SEPARANDO DADOS PARA TREINAMENTO...
+[REDE IGG] ADEQUANDO DADOS PARA TREINAMENTO...
+[REDE IGG] MONTANDO MODELO...
+[REDE IGG] 138063 ELEMENTOS NO CONJUNTO DE TREINAMENTO...
+[REDE IGG] 15341 ELEMENTOS NO CONJUNTO DE VALIDAÇÃO...
+[REDE IGG] INSTANCIANDO REDES...
+[REDE IGG] TREINANDO...
+
+--------- EPOCH 0 ---------
+Training set loss: 0.6930 accuracy: 0.5000
+Validation set loss: 0.6930 accuracy: 0.5000
+--------- EPOCH 100 ---------
+Training set loss: 0.6050 accuracy: 0.6360
+Validation set loss: 0.6210 accuracy: 0.6240
+--------- EPOCH 200 ---------
+Training set loss: 0.5610 accuracy: 0.6600
+Validation set loss: 0.5820 accuracy: 0.6480
+--------- EPOCH 300 ---------
+Training set loss: 0.5430 accuracy: 0.6700
+Validation set loss: 0.5690 accuracy: 0.6570
+--------- EPOCH 400 ---------
+Training set loss: 0.5230 accuracy: 0.6820
+Validation set loss: 0.5660 accuracy: 0.6670
+--------- EPOCH 500 ---------
+Training set loss: 0.5920 accuracy: 0.6460
+Validation set loss: 0.6080 accuracy: 0.6350
+--------- EPOCH 600 ---------
+Training set loss: 0.5430 accuracy: 0.6730
+Validation set loss: 0.5690 accuracy: 0.6610
+--------- EPOCH 700 ---------
+Training set loss: 0.5300 accuracy: 0.6770
+Validation set loss: 0.5600 accuracy: 0.6630
+--------- EPOCH 800 ---------
+Training set loss: 0.5180 accuracy: 0.6840
+Validation set loss: 0.5580 accuracy: 0.6690
+--------- EPOCH 900 ---------
+Training set loss: 0.5290 accuracy: 0.6800
+Validation set loss: 0.5670 accuracy: 0.6660
+
+MODELO TREINADO. (Salvo em ./trained_nn/igG.pt)
+
+------------------------
+
+[REDE IGM] SEPARANDO DADOS PARA TREINAMENTO...
+[REDE IGM] ADEQUANDO DADOS PARA TREINAMENTO...
+[REDE IGM] MONTANDO MODELO...
+[REDE IGM] 137543 ELEMENTOS NO CONJUNTO DE TREINAMENTO...
+[REDE IGM] 15283 ELEMENTOS NO CONJUNTO DE VALIDAÇÃO...
+[REDE IGM] INSTANCIANDO REDES...
+[REDE IGM] TREINANDO...
+
+--------- EPOCH 0 ---------
+Training set loss: 0.6940 accuracy: 0.5000
+Validation set loss: 0.6940 accuracy: 0.5030
+--------- EPOCH 100 ---------
+Training set loss: 0.5930 accuracy: 0.6450
+Validation set loss: 0.6050 accuracy: 0.6370
+--------- EPOCH 200 ---------
+Training set loss: 0.5430 accuracy: 0.6720
+Validation set loss: 0.5610 accuracy: 0.6610
+--------- EPOCH 300 ---------
+Training set loss: 0.5200 accuracy: 0.6820
+Validation set loss: 0.5410 accuracy: 0.6730
+--------- EPOCH 400 ---------
+Training set loss: 0.5250 accuracy: 0.6790
+Validation set loss: 0.5440 accuracy: 0.6730
+--------- EPOCH 500 ---------
+Training set loss: 0.5090 accuracy: 0.6840
+Validation set loss: 0.5420 accuracy: 0.6770
+--------- EPOCH 600 ---------
+Training set loss: 0.5710 accuracy: 0.6530
+Validation set loss: 0.5850 accuracy: 0.6460
+--------- EPOCH 700 ---------
+Training set loss: 0.5120 accuracy: 0.6870
+Validation set loss: 0.5320 accuracy: 0.6790
+--------- EPOCH 800 ---------
+Training set loss: 0.5040 accuracy: 0.6890
+Validation set loss: 0.5310 accuracy: 0.6810
+--------- EPOCH 900 ---------
+Training set loss: 0.5030 accuracy: 0.6890
+Validation set loss: 0.5290 accuracy: 0.6810
+
+MODELO TREINADO. (Salvo em ./trained_nn/igM.pt)
+
+------------------------
+
+[REDE PCR] SEPARANDO DADOS PARA TREINAMENTO...
+[REDE PCR] ADEQUANDO DADOS PARA TREINAMENTO...
+[REDE PCR] MONTANDO MODELO...
+[REDE PCR] 41214 ELEMENTOS NO CONJUNTO DE TREINAMENTO...
+[REDE PCR] 4580 ELEMENTOS NO CONJUNTO DE VALIDAÇÃO...
+[REDE PCR] INSTANCIANDO REDES...
+[REDE PCR] TREINANDO...
+
+--------- EPOCH 0 ---------
+Training set loss: 0.6930 accuracy: 0.4620
+Validation set loss: 0.6930 accuracy: 0.4610
+--------- EPOCH 100 ---------
+Training set loss: 0.5390 accuracy: 0.6820
+Validation set loss: 0.5510 accuracy: 0.6730
+--------- EPOCH 200 ---------
+Training set loss: 0.5000 accuracy: 0.7110
+Validation set loss: 0.5550 accuracy: 0.6880
+--------- EPOCH 300 ---------
+Training set loss: 0.5300 accuracy: 0.6970
+Validation set loss: 0.6170 accuracy: 0.6810
+--------- EPOCH 400 ---------
+Training set loss: 0.4750 accuracy: 0.7230
+Validation set loss: 0.6230 accuracy: 0.6910
+--------- EPOCH 500 ---------
+Training set loss: 0.4700 accuracy: 0.7250
+Validation set loss: 0.6560 accuracy: 0.6930
+--------- EPOCH 600 ---------
+Training set loss: 0.4650 accuracy: 0.7270
+Validation set loss: 0.6870 accuracy: 0.6910
+--------- EPOCH 700 ---------
+Training set loss: 0.4620 accuracy: 0.7280
+Validation set loss: 0.7080 accuracy: 0.6920
+--------- EPOCH 800 ---------
+Training set loss: 0.4610 accuracy: 0.7290
+Validation set loss: 0.7330 accuracy: 0.6910
+--------- EPOCH 900 ---------
+Training set loss: 0.4610 accuracy: 0.7290
+Validation set loss: 0.7570 accuracy: 0.6910
+
+MODELO TREINADO. (Salvo em ./trained_nn/PCR.pt)
+
+TEMPO GASTO: 1041.11s
+FIM.

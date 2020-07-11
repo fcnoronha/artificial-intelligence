@@ -50,14 +50,13 @@ def use_network(device='cpu'):
     '''
 
     message = '==> Entre com os exames necessarios para a previsao\n'
-    message += '==> [Formato: Creatinina/Potássio/Chumbo. sangue/...]\n'
+    message += '==> [Formato: Creatinina/Potássio/RDW/...]\n'
     message += '==> [A lista de exames pode ser vists em PRE/used_analitos.csv]\n'
-    answer = input(message).split('/')
+    answer = input(message).split(',')
 
     # rodando a rede de cada exame
     for exam in range(3):
-        model_path = MODEL_PATH[exam]
-        network = torch.load(MODEL_PATH[exam])
+        network = torch.load(MODEL_PATH[exam], map_location='cpu')
         answer = normalize(answer)
         prediction = predictor(network, device, answer)
         prediction = 'POSITIVO' if prediction else 'NEGATIVO'

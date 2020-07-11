@@ -10,7 +10,7 @@ from sklearn.utils import shuffle
 from collections import Counter
 import pandas as pd
 
-def load_data(data_path='../PRE/data_r.csv'):
+def load_data(data_path='../PRE/data.csv'):
     '''
     Funcao que importa dados de um arquivo csv. Retorna um dataFrame.
     '''
@@ -43,7 +43,7 @@ def process_data(data, exam_type):
     # over-sampling para equilibrar as classes 
     ros = RandomOverSampler(random_state=0)
     x_resampled, y_resampled = ros.fit_resample(x, y)
-    print(sorted(Counter(y_resampled).items()))
+    #print(sorted(Counter(y_resampled).items()))
     x, y = shuffle(x_resampled, y_resampled, random_state=42)
 
     return (x, y)
